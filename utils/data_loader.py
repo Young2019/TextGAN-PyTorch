@@ -60,9 +60,11 @@ class GenDataIter:
         return all_data
 
     def reset(self, samples):
-        data = GANDataset(self.__read_data__(samples))
-        self.loader.dataset = data
-        self.loader.sampler.data_source.data = data
+        self.loader = DataLoader(
+            dataset=GANDataset(self.__read_data__(samples)),
+            batch_size=self.batch_size,
+            shuffle=self.shuffle,
+            drop_last=True)
         self.input = self._all_data_('input')
         self.target = self._all_data_('target')
         return self.loader
@@ -115,9 +117,11 @@ class DisDataIter:
         return all_data
 
     def reset(self, pos_samples, neg_samples):
-        data = GANDataset(self.__read_data__(pos_samples, neg_samples))
-        self.loader.dataset = data
-        self.loader.sampler.data_source.data = data
+        self.loader = DataLoader(
+            dataset=GANDataset(self.__read_data__(pos_samples, neg_samples)),
+            batch_size=self.batch_size,
+            shuffle=self.shuffle,
+            drop_last=True)
         return self.loader
 
     def random_batch(self):
